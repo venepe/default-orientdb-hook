@@ -1,6 +1,4 @@
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
+import java.time.Instant;
 
 import com.orientechnologies.orient.core.hook.ODocumentHookAbstract;
 import com.orientechnologies.orient.core.hook.ORecordHook;
@@ -23,24 +21,20 @@ public class DefaultOrientdbHook extends ODocumentHookAbstract implements ORecor
 		      switch( iType ){
 		        case BEFORE_CREATE: {
 		        	
-		        	Date in = new Date();
-		        	LocalDateTime ldt = LocalDateTime.ofInstant(in.toInstant(), ZoneId.systemDefault());
-		        	Date out = Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant());
-		        	
+		        	String instant = Instant.now().toString();
 				      
-				    ((ODocument) iRecord).field("createdAt", out);
-				    ((ODocument) iRecord).field("updatedAt", out);
+				    ((ODocument) iRecord).field("createdAt", instant);
+				    ((ODocument) iRecord).field("updatedAt", instant);
 				    
 		            return RESULT.RECORD_CHANGED;
 		              
 			      }
 		        
 		          case BEFORE_UPDATE: {
-		        	  Date in = new Date();
-		        	  LocalDateTime ldt = LocalDateTime.ofInstant(in.toInstant(), ZoneId.systemDefault());
-		        	  Date out = Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant());
+		        	  
+		        	  String instant = Instant.now().toString();
 					    
-					  ((ODocument) iRecord).field("updatedAt", out);
+					  ((ODocument) iRecord).field("updatedAt", instant);
 					      
 			          return RESULT.RECORD_CHANGED;
 		          }
